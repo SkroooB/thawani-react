@@ -119,4 +119,4 @@ MIT License.
 
 ## 🌟 Acknowledgements
 
-Special thanks to SkroooB and Social Mania Oman for their contributions to this example project.
+Special thanks to SkroooB and Social Mania Oman for their contributions.
