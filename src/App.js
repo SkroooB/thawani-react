@@ -1,23 +1,19 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import Checkout from "./Checkout";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Thawani ECommerce Checkout Example</h1>
+      <Checkout
+        apiKey="rRQ26GcsZzoEhbrP2HZvLYDbn9C9et"
+        pubKey='HGvTMLDssJghr9tlN9gr4DVYt0qyBy'
+        client_reference_id="123123"
+        products={[{ name: "product 1", quantity: 1, unit_amount: 10000 }]}
+        success_url="http://localhost:3000/success"
+        cancel_url="http://localhost:3000/canceled"
+        metadata={{ "Customer name": "somename", "order id": 0 }}
+      />
     </div>
   );
 }
