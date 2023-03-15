@@ -1,4 +1,4 @@
-# 🛍 Thawani ECommerce Checkout Example 🛒
+# 🛍 Thawani ECommerce Checkout 🛒
 A simple React checkout component using Thawani ECommerce API.
 
 Author: SkroooB
