@@ -1,70 +1,121 @@
-# Getting Started with Create React App
+### 🛍 Thawani ECommerce Checkout Example 🛒
+A simple React checkout component using Thawani ECommerce API.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Author: SkroooB
 
-## Available Scripts
+## Thawani Checkout Docs
+https://docs.thawani.om/
 
-In the project directory, you can run:
+## ⚙ Installation
+To use this component in your own project, simply clone the repository and install the required dependencies:
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+# `git clone https://github.com/SkroooB/thawani-react.git`
+# `cd thawani-react`
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+npm install
+## 📚 Usage
+In your main application file, import the Checkout component and include it in your component tree with the necessary props:
 
-### `npm test`
+```
+import "./App.css";
+import Checkout from "./Checkout";
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+function App() {
+  return (
+    <div>
+      <h1>Thawani ECommerce Checkout Example</h1>
+      <Checkout
+        apiKey="your-api-key"
+        pubKey="your-public-key"
+        client_reference_id="your-client-reference-id"
+        products={[{ name: "product 1", quantity: 1, unit_amount: 10000 }]}
+        success_url="http://localhost:3000/success"
+        cancel_url="http://localhost:3000/canceled"
+        metadata={{ "Customer name": "somename", "order id": 0 }}
+      />
+    </div>
+  );
+}
 
-### `npm run build`
+export default App;
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Replace your-api-key, your-public-key, and your-client-reference-id with your actual Thawani API key, public key, and client reference ID, respectively.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+The products prop should be an array of objects with name, quantity, and unit_amount properties.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+The success_url and cancel_url props should contain the URLs to redirect the customer to after a successful or canceled payment, respectively.
 
-### `npm run eject`
+The metadata prop should be an object containing any additional data you want to associate with the checkout session.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## 💡 Example Component
+The Checkout creates a checkout session and redirects the customer to Thawani's checkout page.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```
+import React, { useState } from "react";
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+const Checkout = ({
+  apiKey,
+  pubKey,
+  client_reference_id,
+  products,
+  success_url,
+  cancel_url,
+  metadata,
+}) => {
+  const [sessionID, setSessionID] = useState(null);
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+  const createCheckoutSession = async () => {
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "thawani-api-key": apiKey,
+      },
+      body: JSON.stringify({
+        client_reference_id,
+        mode: "payment",
+        products,
+        success_url,
+        cancel_url,
+        metadata,
+      }),
+    };
 
-## Learn More
+    try {
+      const response = await fetch(
+        "https://uatcheckout.thawani.om/api/v1/checkout/session",
+        requestOptions
+      );
+      const data = await response.json();
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+      if (data.success) {
+        setSessionID(data.data.session_id);
+        window.location.href = `https://uatcheckout.thawani.om/pay/${data.data.session_id}?key=${pubKey}`;
+      } else {
+        console.error("Error creating checkout session:", data.description);
+      }
+    } catch (error) {
+      console.error("Error creating checkout session:", error);
+    }
+  };
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+  return (
+    <div className="checkout">
+      <button onClick={createCheckoutSession}>🛍 Proceed to Checkout</button>
+      {sessionID && <p>🔑 Session ID: {sessionID}</ID}</p>}
+</div>
+);
+};
 
-### Code Splitting
+export default Checkout;
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## 📄 License
 
-### Analyzing the Bundle Size
+MIT License.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## 🌟 Acknowledgements
 
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Special thanks to SkroooB and Social Mania Oman for their contributions to this example project.
