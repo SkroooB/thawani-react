@@ -1,4 +1,4 @@
-### 🛍 Thawani ECommerce Checkout Example 🛒
+# 🛍 Thawani ECommerce Checkout Example 🛒
 A simple React checkout component using Thawani ECommerce API.
 
 Author: SkroooB
@@ -10,10 +10,10 @@ https://docs.thawani.om/
 To use this component in your own project, simply clone the repository and install the required dependencies:
 
 
-# `git clone https://github.com/SkroooB/thawani-react.git`
-# `cd thawani-react`
+`git clone https://github.com/SkroooB/thawani-react.git`
+`cd thawani-react`
 
-npm install
+`npm install`
 ## 📚 Usage
 In your main application file, import the Checkout component and include it in your component tree with the necessary props:
 
