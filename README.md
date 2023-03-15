@@ -9,11 +9,12 @@ https://docs.thawani.om/
 ## ⚙ Installation
 To use this component in your own project, simply clone the repository and install the required dependencies:
 
+```
+git clone https://github.com/SkroooB/thawani-react.git
+cd thawani-react
+npm install
+```
 
-`git clone https://github.com/SkroooB/thawani-react.git`
-`cd thawani-react`
-
-`npm install`
 ## 📚 Usage
 In your main application file, import the Checkout component and include it in your component tree with the necessary props:
 
