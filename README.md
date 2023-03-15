@@ -22,18 +22,25 @@ In your main application file, import the Checkout component and include it in y
 import "./App.css";
 import Checkout from "./Checkout";
 
+// Define the App component
 function App() {
   return (
     <div>
       <h1>Thawani ECommerce Checkout Example</h1>
+      {/* Render the Checkout component with necessary props */}
       <Checkout
-        apiKey="your-api-key"
-        pubKey="your-public-key"
-        client_reference_id="your-client-reference-id"
-        products={[{ name: "product 1", quantity: 1, unit_amount: 10000 }]}
-        success_url="http://localhost:3000/success"
-        cancel_url="http://localhost:3000/canceled"
-        metadata={{ "Customer name": "somename", "order id": 0 }}
+        apiKey="rRQ26GcsZzoEhbrP2HZvLYDbn9C9et" // Thawani API key
+        pubKey='HGvTMLDssJghr9tlN9gr4DVYt0qyBy' // Thawani Public key
+        client_reference_id="123123" // Unique client reference ID
+        products={[ // Array of products to be purchased
+          { name: "product 1", quantity: 1, unit_amount: 10000 }
+        ]}
+        success_url="http://localhost:3000/success" // URL to redirect users to upon successful payment
+        cancel_url="http://localhost:3000/canceled" // URL to redirect users to if they cancel the payment
+        metadata={{ // Additional metadata to be passed with the request
+          "Customer name": "somename",
+          "order id": 0
+        }}
       />
     </div>
   );
@@ -56,18 +63,21 @@ The Checkout creates a checkout session and redirects the customer to Thawani's 
 ```
 import React, { useState } from "react";
 
+// Define the Checkout component
 const Checkout = ({
-  apiKey,
-  pubKey,
-  client_reference_id,
-  products,
-  success_url,
-  cancel_url,
-  metadata,
+  apiKey, // Thawani API key
+  pubKey, // Thawani Public key
+  client_reference_id, // Unique client reference ID
+  products, // Array of products to be purchased
+  success_url, // URL to redirect users to upon successful payment
+  cancel_url, // URL to redirect users to if they cancel the payment
+  metadata, // Additional metadata to be passed with the request
 }) => {
-  const [sessionID, setSessionID] = useState(null);
+  const [sessionID, setSessionID] = useState(null); // State to store the session ID
 
+  // Function to create a checkout session
   const createCheckoutSession = async () => {
+    // Prepare the request options for the POST request
     const requestOptions = {
       method: "POST",
       headers: {
@@ -85,14 +95,17 @@ const Checkout = ({
     };
 
     try {
+      // Make a POST request to create a checkout session
       const response = await fetch(
         "https://uatcheckout.thawani.om/api/v1/checkout/session",
         requestOptions
       );
       const data = await response.json();
 
+      // Check if the session was created successfully
       if (data.success) {
-        setSessionID(data.data.session_id);
+        setSessionID(data.data.session_id); // Update the session ID state
+        // Redirect the user to the Thawani payment page
         window.location.href = `https://uatcheckout.thawani.om/pay/${data.data.session_id}?key=${pubKey}`;
       } else {
         console.error("Error creating checkout session:", data.description);
@@ -102,12 +115,13 @@ const Checkout = ({
     }
   };
 
+  // Render the Checkout component
   return (
     <div className="checkout">
-      <button onClick={createCheckoutSession}>🛍 Proceed to Checkout</button>
-      {sessionID && <p>🔑 Session ID: {sessionID}</ID}</p>}
-</div>
-);
+      <button onClick={createCheckoutSession}>Proceed to Checkout</button>
+      {sessionID && <p>Session ID: {sessionID}</p>}
+    </div>
+  );
 };
 
 export default Checkout;
